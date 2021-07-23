@@ -1,0 +1,64 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id "org.jmailen.kotlinter"
+    id "androidx.navigation.safeargs.kotlin"
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    defaultConfig {
+        applicationId "com.assessment.westwingcampaign"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "com.assessment.westwingcampaign.HiltTestRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+kotlinter {
+    ignoreFailures = false
+    indentSize = 4
+    reporters = ['checkstyle', 'plain']
+    experimentalRules = false
+    disabledRules = ["no-wildcard-imports"]
+}
+hilt {
+    enableTransformForLocalTests = true
+}
+preBuild.dependsOn(formatKotlin)
+
+dependencies {
+    implementation project(':core')
+    implementation libs
+    kapt kaptLibs
+    coreLibraryDesugaring coreLibDesugaring
+    testImplementation testLibraries
+    androidTestImplementation androidTestLibraries
+    debugImplementation debugLibraries
+    kaptAndroidTest kaptAndroidTestLibs
+}
